@@ -29,13 +29,13 @@ resource "aws_subnet" "public_webserver_2" {
     #cidr_block = 
 }
 
-resource "aws_subnet" "private_subnet_1" {
+resource "aws_subnet" "private_webserver_1" {
     vpc_id = aws_vpc.alt_school_project.id
     availability_zone = "us-east-1a"
     #cidr_block = ""
 }
 
-resource "aws_subnet" "private_subnet_2" {
+resource "aws_subnet" "private_webserver_2" {
     vpc_id = aws_vpc.altschool_project.vpc.id
     availability_zone = "us-east-1b"
     #cidr_block = ""
@@ -87,15 +87,25 @@ resource "aws_security_group" "alt_school_project_sg" {
 
 resource "aws_instance" "public_server-1" {
     ami = "ami-0574da719dca65348"
+    associate_public_ip_address = true
     instance_type = "t2.micro"
     key_name = "newkey-e1.pem"
+    subnet_id = aws.alt_school_project_
     vpc_security_group_id = [aws_security_group.alt_school_project_sg.id]
-    associate_public_ip_address = false
 }
 
 resource "aws_instance" "public_server-1" {
     ami = "ami-0574da719dca65348"
     instance_type = "t2.micro"
+    key_name = "newkey-e1.pem"
+    vpc_security_group_id = [aws_security_group.alt_school_project_sg.id]
+    associate_public_ip_address = true
+}
+
+resource "aws_instance" "private_server-1" {
+    ami = "ami-0574da719dca65348"
+    instance_type = "t2.micro"
+    
     key_name = "newkey-e1.pem"
     vpc_security_group_id = [aws_security_group.alt_school_project_sg.id]
     associate_public_ip_address = false
