@@ -85,7 +85,7 @@ resource "aws_security_group" "alt_school_project_sg" {
 
 # Deploy Ec2 instances in the public and private subnets
 
-resource "aws_instance" "public_server-1" {
+resource "aws_instance" "public_server_1" {
     ami = "ami-0574da719dca65348"
     associate_public_ip_address = true
     instance_type = "t2.micro"
@@ -120,5 +120,20 @@ resource "aws_instance" "private_server-2" {
     vpc_security_group_id = [aws_security_group.alt_school_project_sg.id]
     associate_public_ip_address = false
 }
+
+
+# Create an Elastic Ip Address
+resource "aws_eip" "alt_school_project_eip_1" {
+    vpc = true
+}
+
+resource "aws_eip" "alt_school_project_eip_2" {
+    vpc = true
+}
+
+# Create a NatGateway then attach the EIP
+resource "aws_nat_gateway" "nat_public_server_1"
+
+
 
 
