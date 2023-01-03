@@ -182,7 +182,21 @@ resource "aws_lb" "alt_school_project_lb" {
 resource "aws_lb_listener" "alt_school_project_lb" {
     protocol = "HTTP"
     port = "80"
+    load_balancer_arn = aws_lb.alt_school_project_lb.id
+
+    default_action {
+        target_group_arn = 
+    }
+
 }
+
+# Create Target Group
+resource "aws_lb_target_group" "alt_school_project_lb_tgp" {
+    name = "alt_school_project_lb-tgp"
+    port = "80"
+    protocol = "HTTP"
+    vpc_id = "aws_vpc.alt_school_project_vp.id"
+} 
 
 
 
