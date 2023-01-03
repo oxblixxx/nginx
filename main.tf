@@ -90,13 +90,14 @@ resource "aws_instance" "public_server-1" {
     associate_public_ip_address = true
     instance_type = "t2.micro"
     key_name = "newkey-e1.pem"
-    subnet_id = aws.alt_school_project_
+    subnet_id = aws.alt_school_project_public_webserver-1.id
     vpc_security_group_id = [aws_security_group.alt_school_project_sg.id]
 }
 
-resource "aws_instance" "public_server-1" {
+resource "aws_instance" "public_server-2" {
     ami = "ami-0574da719dca65348"
     instance_type = "t2.micro"
+    subnet_id = aws.alt_school_project_public_webserver-2.id
     key_name = "newkey-e1.pem"
     vpc_security_group_id = [aws_security_group.alt_school_project_sg.id]
     associate_public_ip_address = true
@@ -105,9 +106,19 @@ resource "aws_instance" "public_server-1" {
 resource "aws_instance" "private_server-1" {
     ami = "ami-0574da719dca65348"
     instance_type = "t2.micro"
-    
+    subnet_id = aws.alt_school_project_private_webserver-1.id 
     key_name = "newkey-e1.pem"
     vpc_security_group_id = [aws_security_group.alt_school_project_sg.id]
     associate_public_ip_address = false
 }
+
+resource "aws_instance" "private_server-2" {
+    ami = "ami-0574da719dca65348"
+    instance_type = "t2.micro"
+    subnet_id = aws.alt_school_project_private_webserver-2.id 
+    key_name = "newkey-e1.pem"
+    vpc_security_group_id = [aws_security_group.alt_school_project_sg.id]
+    associate_public_ip_address = false
+}
+
 
