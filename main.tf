@@ -1,5 +1,5 @@
 # Cloud provider
-provider "aws" = {
+provider "aws"  {
     region = "us-east-1"
     access_key = 
     secret_key =
@@ -94,7 +94,7 @@ resource "aws_instance" "public_server_1" {
     vpc_security_group_id = [aws_security_group.alt_school_project_sg.id]
 }
 
-resource "aws_instance" "public_server-2" {
+resource "aws_instance" "public_server_2" {
     ami = "ami-0574da719dca65348"
     instance_type = "t2.micro"
     subnet_id = aws.alt_school_project_public_webserver-2.id
@@ -103,7 +103,7 @@ resource "aws_instance" "public_server-2" {
     associate_public_ip_address = true
 }
 
-resource "aws_instance" "private_server-1" {
+resource "aws_instance" "private_server_1" {
     ami = "ami-0574da719dca65348"
     instance_type = "t2.micro"
     subnet_id = aws.alt_school_project_private_webserver-1.id 
@@ -112,7 +112,7 @@ resource "aws_instance" "private_server-1" {
     associate_public_ip_address = false
 }
 
-resource "aws_instance" "private_server-2" {
+resource "aws_instance" "private_server_2" {
     ami = "ami-0574da719dca65348"
     instance_type = "t2.micro"
     subnet_id = aws.alt_school_project_private_webserver-2.id 
@@ -132,7 +132,38 @@ resource "aws_eip" "alt_school_project_eip_2" {
 }
 
 # Create a NatGateway then attach the EIP
-resource "aws_nat_gateway" "nat_public_server_1"
+resource "aws_nat_gateway" "nat_gw_public_server_1" {
+    allocation_id = aws_eip.altschool_project_eip_1.id
+    subnet_id = aws_subnet.alt_school_project_public_webserver_1.id   
+}
+
+resource "aws_nat_gateway" "nat_gw_public_server_2" {
+    allocation_id = aws_eip.altschool_project_eip_2.id
+    subnet_id = aws_subnet.alt_school_project_public_webserver_2.id   
+}
+
+# Create Route tables for associations with Nat gateways
+resource "aws_route_table" "alt_school_project_us_east_1a_ngw" {
+    vpc_id = aws_vpc.alt_school_project_vpc.id
+    route {
+        cidr_block = "0.0.0.0./0"
+        nat_gateway_id = aws_nat_gateway.nat_gw_public_server_1.id 
+    }
+}
+
+resource "aws_route_table" "alt_school_project_us_east_1b_ngw" {
+    vpc_id = aws_vpc.alt_school_project_vpc.id
+    route {
+        cidr_block = "0.0.0.0./0"
+        nat_gateway_id = aws_nat_gateway.nat_gw_public_server_1.id 
+    }
+}
+
+# Associate created Route tables
+resource "aws_route_table_association "alt_school_project_us_east_1a_ngw" {
+    subnet_id = aws_subnet.public_server
+
+}
 
 
 
