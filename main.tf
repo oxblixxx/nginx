@@ -142,8 +142,8 @@ resource "aws_nat_gateway" "nat_gw_public_server_2" {
     subnet_id = aws_subnet.alt_school_project_public_webserver_2.id   
 }
 
-# Create Route tables for associations with Nat gateways
-resource "aws_route_table" "alt_school_project_us_east_1a_ngw" {
+# Create Route tables associations with Nat gateways
+resource "aws_route_table" "alt_school_project_us_east_1a_rtb" {
     vpc_id = aws_vpc.alt_school_project_vpc.id
     route {
         cidr_block = "0.0.0.0./0"
@@ -151,7 +151,7 @@ resource "aws_route_table" "alt_school_project_us_east_1a_ngw" {
     }
 }
 
-resource "aws_route_table" "alt_school_project_us_east_1b_ngw" {
+resource "aws_route_table" "alt_school_project_us_east_1b_rtb" {
     vpc_id = aws_vpc.alt_school_project_vpc.id
     route {
         cidr_block = "0.0.0.0./0"
@@ -160,11 +160,29 @@ resource "aws_route_table" "alt_school_project_us_east_1b_ngw" {
 }
 
 # Associate created Route tables
-resource "aws_route_table_association "alt_school_project_us_east_1a_ngw" {
-    subnet_id = aws_subnet.public_server
-
+resource "aws_route_table_association" "alt_school_project_us_east_1a_ngw" {
+    subnet_id = aws_subnet.private_webserver_1.id
+    route_table_id =  aws.route_table.alt_school_project_us_east_1a_rtb.id
 }
 
+resource "aws_route_table_association" "alt_school_project_us_east_1b_rtb" {
+    subnet_id = aws_subnet.private_webserver_2.id
+    route_table_id =  aws.route_table.alt_school_project_us_east_1b_rtb.id
+}
+
+# Create a Load balancer
+resource "aws_lb" "alt_school_project_lb" {
+    name = "alt_school_project_lb"
+    internal = false
+    security_groups = []
+    vpc_id = aws.alt_school_project_vpc.id
+}
+
+# Create a Listener for AltSchool LB
+resource "aws_lb_listener" "alt_school_project_lb" {
+    protocol = "HTTP"
+    port = "80"
+}
 
 
 
