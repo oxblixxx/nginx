@@ -341,7 +341,7 @@ resource "aws_instance" "altschool-project-private-server-2" {
 resource "aws_lb" "altschool-project-lb" {
     name            = "altschoolproject-lb"
     internal        = false
-    security_groups = [aws_security_group.altschool-project-sg.id]
+    security_groups = [aws_security_group.altschool-project-lb-sg.id]
     subnets         = [aws_subnet.altschool-project-public-subnet-1.id, aws_subnet.altschool-project-public-subnet-2.id]
     enable_deletion_protection = false
 #    depends_on                 = [aws_autoscaling_group.terraform-auto-scaling-grp]
