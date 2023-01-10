@@ -308,7 +308,7 @@ resource "aws_instance" "altschool-project-private-server-1" {
                 host=$(hostname)
                 ip=$(ifconfig | grep 'inet ' | grep -v '127.0.0.1' | cut -c 7-17)
                 sudo chown -R $USER:$USER /var/www
-                echo 'Hi! Abdul-Barri deployed this server. Host name / IP address for this server is '$host'' > /var/www/html/index.nginx-debian.html
+                echo 'Hi! ox. Your ip-addr is '$host'' > /var/www/html/index.nginx-debian.html
                 EOF
             
 }
@@ -334,7 +334,7 @@ resource "aws_instance" "altschool-project-private-server-2" {
                 host=$(hostname)
                 ip=$(ifconfig | grep 'inet ' | grep -v '127.0.0.1' | cut -c 7-17)
                 sudo chown -R $USER:$USER /var/www
-                echo 'Hi! Abdul-Barri deployed this server. Host name / IP address for this server is '$host'' > /var/www/html/index.nginx-debian.html
+                echo 'Hi! ox. Your ip-addr is  '$host'' > /var/www/html/index.nginx-debian.html
                 EOF
 }
 #Create a Load balancer
